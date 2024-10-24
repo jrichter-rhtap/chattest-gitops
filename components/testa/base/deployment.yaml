@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:  
+    tad.gitops.set/image: ".spec.template.spec.containers[0].image"
+    tad.gitops.get/image: ".spec.template.spec.containers[0].image"
+    tad.gitops.set/replicas: ".spec.replicas"
+    tad.gitops.get/replicas: ".spec.replicas" 
+  labels: 
+    app.kubernetes.io/instance: testa
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name:  testa
+    app.kubernetes.io/part-of: testa  
+  name: testa
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance:  testa 
+  template:
+    metadata: 
+      labels:
+        app.kubernetes.io/instance:  testa
+    spec:
+      containers:
+      - image:  quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest
+        name: app-inference
+        envFrom:
+        - configMapRef:
+            name: testa-model-config
+        ports:
+        - containerPort: 8501
+        securityContext:
+          runAsNonRoot: true

@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: testa-database-config
+data:
+  VECTORDB_HOST: "testa-database"
+  VECTORDB_PORT: ""
